@@ -1,0 +1,14 @@
+{
+  "network": { // connection info for the network
+    "uri": "irc.freenode.com",
+    "port": 6667
+  },
+  "nicks": [ // nicks to use on the network, loops through until one is available
+    "cimera", "mr_cimera"
+  ],
+  "channels": [ // channels to join and listen to
+    "#cimera"
+  ],
+
+  "prefix": "!" // commands must start with this prefix (in channels)
+}
