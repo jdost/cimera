@@ -1,12 +1,12 @@
 {
   "generic": {
-    "irc": {
-      "network": "irc.saiyr.net",
-      "nick": "cimera_bot",
-      "channels": [
-        "#cimera"
-      ]
+    "logger" : {
+      "debug": {
+        "commands": false,
+        "interactive": true
+      }
+    },
+    "comm" : {
     }
-  },
-  "projects": []
+  }
 }

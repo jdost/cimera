@@ -6,5 +6,4 @@ fs.readFile('settings.json', function (err, contents) {
   var modules = JSON.parse(contents);
 
   if (modules.generic) cimera.loadPlugin(modules.generic);
-  if (modules.projects) cimera.loadProject(modules.projects);
 });

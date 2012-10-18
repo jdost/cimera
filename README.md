@@ -4,8 +4,8 @@ cimera is a bot framework to integrate with various communication systems and bu
 
 ## Plugins
 
-I am initially going to write a test plugin to use for unit tests.  This should be just a pretty extensive example of the basic use of a plugin.  Then I plan on writing plugins for XMPP, IRC, GitHub, Kiln/FogBugz, Jenkins, at least these are the pipe dream ones, don't know how long I will last.  Hopefully I will have unit tests for each one, we shall see.
+There are a few types of plugins, there are communication plugins (things like IRC, XMPP, email), versioning plugins (listen to systems for git, mercurial, and svn, as well as services like github, bitbucket, etc.), and integration plugins (stuff that acts on the code, running test suites, builds, deploys).  There are going to be a sample plugin for each type.  There are also going to be basic generic plugins, things like a logger and web API.
 
 ## Status
 
-This is very much a learning project more than designed as heavy production level code.  I have not really done a ton of node stuff, so this will be pretty rough.  Probably a lot of it will be alpha level well into the project, but my first goal is to get this to a dog food state, so IRC, GitHub, and probably TravisCI will be the first things completed.
+A lot of this is being fleshed out still.  The logger has been written, as well as a form of the basic boot up system.  Fake versions of the 3 basic types (VCS, Comm, and CI/Builder) are next, as this will allow for the basic interaction to be fleshed out better.  These will act on the basic interface (plugins can enrich the interface as desired).

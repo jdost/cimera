@@ -10,14 +10,8 @@ exports.VCS = {
 };
 // Plugins
 exports.PLUGIN = {
-  LOADED: "CIMERAPLUGINLOADED",  // Called when a plugin finishes loading
-      // name
+  LOADED: "CIMERAPLUGINLOADED", // name, version
   ERROR: "CIMERAPLUGINERROR"    // name, msg
 };
-// Commands
-exports.CMDHELP = "CIMERACMDHELP"; // Return call from HELPREQ when getting the help
-  // text for a command from across the plugins
-exports.HELPREQ = "CIMERAGETHELP"; // Request event for the help text from commands
-  // across the plugins
-exports.EXECBUILD = "CIMERABUILDCMD";
-exports.RAWCOMMAND = "CIMERARAWCOMMAND";
+// Top Level
+exports.RAWCMD = "CIMERACOMMAND"; // Array of split arguments

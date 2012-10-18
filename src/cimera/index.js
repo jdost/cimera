@@ -1,4 +1,6 @@
-var VERSION = "0.1a";
+var __pkg__ = require('./package.json'),
+    __name__ = __pkg__.name,
+    __version__ = __pkg__.version;
 var PLUGIN_DIR = "./plugins/";
 
 var EventEmitter = require('events').EventEmitter,
@@ -24,7 +26,4 @@ var loadPlugin = module.exports.loadPlugin = function (properties, name) {
 
   var plugin = require(PLUGIN_DIR + name);
   plugin(pipe, properties);
-};
-var loadProject = module.exports.loadProject = function (properties, name) {
-  console.log(name);
 };

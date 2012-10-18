@@ -1,0 +1,7 @@
+{
+  "name": "logger",
+  "main": "index.js",
+  "version": "0.0",
+  "author": "jdost",
+  "description": "Simple logging plugin for cimera, has interactive console system to aid in development"
+}
