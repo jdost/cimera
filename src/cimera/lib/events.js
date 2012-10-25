@@ -15,3 +15,4 @@ exports.PLUGIN = {
 };
 // Top Level
 exports.RAWCMD = "CIMERACOMMAND"; // Array of split arguments
+exports.LOG = "CIMERALOGMSG"; // String to be logged and logging level

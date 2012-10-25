@@ -1,0 +1,5 @@
+.fake FAKEVCS {
+   "type": "commit",
+   "message": "initial commit"
+}
+.watch

@@ -1,4 +1,7 @@
 {
-  "commands": false,
-  "interactive": false
+  "debug": {
+    "commands": false,
+    "interactive": false
+  },
+  "threshold": 0
 }
