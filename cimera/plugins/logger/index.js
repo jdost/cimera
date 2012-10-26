@@ -8,8 +8,17 @@ var _ = require('underscore'),
   util = require('util');
 
 var EVENTS = global.EVENTS,
+  LEVELS = {
+    "CRITICAL": 5,
+    "ERROR": 4,
+    "WARN": 3
+    "INFO": 2,
+    "DEBUG": 1
+  },
   pipe,
   log_threshold;
+
+global.LEVELS = LEVELS;
 
 var output = console.log,
   print = function () {
@@ -42,7 +51,11 @@ function plugin_setup(pipe_, settings) {
   pipe = pipe_;
   settings = _.defaults(settings, defaults);
 
-  log_threshold = settings.threshold;
+  if (typeof settings.threshold === 'string' && LEVELS[settings.threshold]) {
+    log_threshold = LEVELS[settings.threshold];
+  } else {
+    log_threshold = settings.threshold;
+  }
 
   attach_events(settings);
   if (settings.debug && settings.debug.interactive) { setup_input(); }

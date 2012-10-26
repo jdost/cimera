@@ -16,19 +16,23 @@ var _ = require('underscore'),
 
   commands = { },
   addCommand = function (name, func) {
-    commands[name] = func;
+    if (util.isArray(name)) {
+      _.each(name, function (n) { commands[n] = func; });
+    } else {
+      commands[name] = func;
+    }
   },
   pause = function () {
     isPaused = true;
     readline.setPrompt('', 0);
   };
 
-addCommand(".close", function () {
+addCommand([".close", ".c"], function () {
   readline.close();
   pipe.emit(EVENTS.CLOSE);
   return true;
 });
-addCommand(".watch", function () {
+addCommand([".watch", ".w"], function () {
   pause();
   while (logs.length) { output(logs.shift()); }
 });
@@ -38,7 +42,7 @@ addCommand(".load", function (args) {
     readline.write(data);
   });
 });
-addCommand(".fake", function (args) {
+addCommand([".fake", ".f"], function (args) {
   var t_str = args, act, packet;
   while (t_str.indexOf('{') !== -1) {
     isML += 1;
@@ -81,8 +85,9 @@ function traversal(obj, act, par) {
   });
 }
 addCommand(".ls", function () {
+  var packets = require("../../lib/events").packets;
   traversal(EVENTS, function (raw, clean) {
-    console.log("E - %s = %s", clean, raw);
+    console.log("E - %s(%s) -> %s", clean, raw, packets[raw]);
   });
 });
 
@@ -109,7 +114,7 @@ function handle_input(raw) {
   } else {
     cmd = raw.split(' ');
     if (!commands[cmd[0]]) {
-      pipe.emit(EVENTS.RAWCMD, cmd);
+      pipe.emit(EVENTS.RAWCMD, raw);
     } else if (commands[cmd[0]].call(this, cmd.slice(1).join(' '))) {
       return;
     }

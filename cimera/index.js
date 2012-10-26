@@ -8,7 +8,7 @@ var __pkg__ = require('./package.json'),
   _ = require('underscore'),
   util = require('util');
 
-global.EVENTS = require('./lib/events.js');
+global.EVENTS = require('./lib/events.js').events;
 
 var pipe = (function (base) {
   return base;

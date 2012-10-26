@@ -10,6 +10,10 @@ function start_build(name) {
     name: name
   }, res = Math.random() < 0.5 ? EVENTS.BUILD.SUCCESS : EVENTS.BUILD.FAILURE;
 
+  pipe.emit(EVENTS.BUILD.STARTED, {
+    name: name
+  });
+
   if (res === EVENTS.BUILD.FAILURE) { end_packet.reason = "Planned Failure"; }
 
   setTimeout(function () {
@@ -19,10 +23,10 @@ function start_build(name) {
 
 function bind_events() {
   pipe.on(EVENTS.VCS.COMMIT, function (commit) {
-    pipe.emit(EVENTS.BUILD.STARTED, {
-      name: commit.id
-    });
     start_build(commit.id);
+  }).on(EVENTS.RAWCMD, function (command, context) {
+    command = command.split(" ");
+    if (command[0] === "build") { start_build("Manual"); }
   });
 }
 

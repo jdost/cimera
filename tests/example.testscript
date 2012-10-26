@@ -1,5 +1,6 @@
 .fake FAKEVCS {
    "type": "commit",
-   "message": "initial commit"
+   "message": "initial commit",
+   "name": "jdost"
 }
 .watch
