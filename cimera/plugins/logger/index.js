@@ -47,18 +47,21 @@ function setup_input() {
   output = interactive.output;
 }
 
-function plugin_setup(pipe_, settings) {
+function plugin_setup(pipe_, settings, DEBUG) {
   pipe = pipe_;
   settings = _.defaults(settings, defaults);
 
   if (typeof settings.threshold === 'string' && LEVELS[settings.threshold]) {
     log_threshold = LEVELS[settings.threshold];
+  } else if (DEBUG) {
+    log_threshold = 0;
   } else {
     log_threshold = settings.threshold;
   }
 
   attach_events(settings);
   if (settings.debug && settings.debug.interactive) { setup_input(); }
+  else if (DEBUG) { setup_input(); }
 
   pipe.emit(EVENTS.PLUGIN.LOADED, {
     name: __name__,

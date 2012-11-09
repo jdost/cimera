@@ -31,7 +31,7 @@ var loadPlugin = module.exports.loadPlugin = function (properties, name) {
   }
 
   plugin = require(PLUGIN_DIR + name);
-  plugin(pipe, properties);
+  plugin(pipe, properties, DEBUG);
 };
 
 var help_lines = [
