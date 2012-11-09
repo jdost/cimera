@@ -11,7 +11,7 @@ var EVENTS = global.EVENTS,
   LEVELS = {
     "CRITICAL": 5,
     "ERROR": 4,
-    "WARN": 3
+    "WARN": 3,
     "INFO": 2,
     "DEBUG": 1
   },

@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+var cimera = require('../cimera');
+cimera.cli();
