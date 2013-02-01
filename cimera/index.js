@@ -30,12 +30,20 @@ var loadPlugin = module.exports.loadPlugin = function (properties, name) {
     name = temp;
   }
 
-  plugin = require(PLUGIN_DIR + name);
-  plugin(pipe, properties, DEBUG);
+  try {
+    plugin = require(PLUGIN_DIR + name);
+    plugin(pipe, properties, DEBUG);
+  } catch (e) {
+    if (DEBUG) {
+      throw e;
+    } else {
+      console.log("Error loading plugin (%s)", name);
+    }
+  }
 };
 
 var help_lines = [
-  util.format("Cimera v%s", __version__),
+  util.format("%s v%s", __name__, __version__),
   util.format("USAGE: %s [arguments]", process.title),
   "Arguments:",
   "  -d / --debug:\t\tEnable debug flags irregardless of settings in config",
@@ -105,7 +113,17 @@ module.exports.cli = function () {
       return;
     }
 
-    var settings = JSON.parse(contents);
+    try {
+      var settings = JSON.parse(contents);
+    } catch (e) {
+      if (DEBUG) {
+        throw e;
+      } else {
+        console.log("Error parsing settings file");
+        process.exit(1);
+      }
+    }
+
     load(settings);
   });
 };
