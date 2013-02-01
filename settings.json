@@ -3,7 +3,8 @@
     "logger" : {
       "debug": {
         "commands": false,
-        "interactive": true
+        "interactive": true,
+        "prefix": "/"
       }
     },
     "comm" : {

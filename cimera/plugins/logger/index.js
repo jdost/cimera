@@ -41,9 +41,9 @@ function attach_events(settings) {
   }
 }
 
-function setup_input() {
+function setup_input(settings) {
   var interactive = require('./interactive');
-  interactive(pipe);
+  interactive(pipe, settings);
   output = interactive.output;
 }
 
@@ -60,8 +60,8 @@ function plugin_setup(pipe_, settings, DEBUG) {
   }
 
   attach_events(settings);
-  if (settings.debug && settings.debug.interactive) { setup_input(); }
-  else if (DEBUG) { setup_input(); }
+  if (settings.debug && settings.debug.interactive) { setup_input(settings); }
+  else if (DEBUG) { setup_input(settings); }
 
   pipe.emit(EVENTS.PLUGIN.LOADED, {
     name: __name__,

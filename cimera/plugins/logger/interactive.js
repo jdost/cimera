@@ -7,12 +7,14 @@ var _ = require('underscore'),
   MLCmd = "",
   isFile = false,
   pipe,
+  settings,
   logs = [],
 
   readline,
   output,
 
   EVENTS = global.EVENTS,
+  LEADER = "/",
 
   commands = { },
   addCommand = function (name, func) {
@@ -27,51 +29,60 @@ var _ = require('underscore'),
     readline.setPrompt('', 0);
   };
 
-addCommand([".close", ".c"], function () {
-  readline.close();
-  pipe.emit(EVENTS.CLOSE);
-  return true;
-});
-addCommand([".watch", ".w"], function () {
-  pause();
-  while (logs.length) { output(logs.shift()); }
-});
-addCommand(".load", function (args) {
-  fs.readFile(args, 'utf8', function (err, data) {
-    if (err) { throw err; }
-    readline.write(data);
+var setupCommands = function () {
+  addCommand([LEADER + "close", LEADER + "c"], function () {
+    readline.close();
+    pipe.emit(EVENTS.CLOSE);
+    return true;
   });
-});
-addCommand([".fake", ".f"], function (args) {
-  var t_str = args, act, packet;
-  while (t_str.indexOf('{') !== -1) {
-    isML += 1;
-    t_str = t_str.substr(t_str.indexOf('{') + 1);
-  }
-  t_str = args;
-  while (t_str.indexOf('}') !== -1) {
-    isML -= 1;
-    t_str = t_str.substr(t_str.indexOf('}') + 1);
-  }
-
-  if (isML) {
-    MLCmd = MLCmd.length ? [MLCmd, args].join(' ') : args;
-    readline.setPrompt('... ', 4);
-  } else {
-    act = MLCmd.length ? [MLCmd, args].join(' ') : args;
-
-    try {
-      act = act.split(' ');
-      packet = JSON.parse(act.slice(1).join(' '));
-      pipe.emit(act[0], packet);
-    } catch (e) {
-      console.error("ERROR %s", e);
+  addCommand([LEADER + "watch", LEADER + "w"], function () {
+    pause();
+    while (logs.length) { output(logs.shift()); }
+  });
+  addCommand(LEADER + "load", function (args) {
+    fs.readFile(args, 'utf8', function (err, data) {
+      if (err) { throw err; }
+      readline.write(data);
+    });
+  });
+  addCommand([LEADER + "fake", LEADER + "f"], function (args) {
+    var t_str = args, act, packet;
+    while (t_str.indexOf('{') !== -1) {
+      isML += 1;
+      t_str = t_str.substr(t_str.indexOf('{') + 1);
+    }
+    t_str = args;
+    while (t_str.indexOf('}') !== -1) {
+      isML -= 1;
+      t_str = t_str.substr(t_str.indexOf('}') + 1);
     }
 
-    readline.setPrompt('> ', 2);
-    MLCmd = "";
-  }
-});
+    if (isML) {
+      MLCmd = MLCmd.length ? [MLCmd, args].join(' ') : args;
+      readline.setPrompt('... ', 4);
+    } else {
+      act = MLCmd.length ? [MLCmd, args].join(' ') : args;
+
+      try {
+        act = act.split(' ');
+        packet = JSON.parse(act.slice(1).join(' '));
+        pipe.emit(act[0], packet);
+      } catch (e) {
+        console.error("ERROR %s", e);
+      }
+
+      readline.setPrompt('> ', 2);
+      MLCmd = "";
+    }
+  });
+
+  addCommand(LEADER + "ls", function () {
+    var packets = require("../../lib/events").packets;
+    traversal(EVENTS, function (raw, clean) {
+      console.log("E - %s(%s) -> %s", clean, raw, packets[raw]);
+    });
+  });
+};
 
 function traversal(obj, act, par) {
   if (!par) { par = ""; }
@@ -84,13 +95,6 @@ function traversal(obj, act, par) {
     }
   });
 }
-addCommand(".ls", function () {
-  var packets = require("../../lib/events").packets;
-  traversal(EVENTS, function (raw, clean) {
-    console.log("E - %s(%s) -> %s", clean, raw, packets[raw]);
-  });
-});
-
 readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -134,8 +138,13 @@ output = function (str) {
   }
 };
 
-module.exports = function (pipe_) {
+module.exports = function (pipe_, settings_) {
   pipe = pipe_;
+  settings = settings_;
+
+  if (settings.debug.prefix) { LEADER = settings.debug.prefix; }
+
+  setupCommands();
 };
 
 module.exports.output = output;
