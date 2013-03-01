@@ -1,5 +1,5 @@
 {
   "name": "cimera",
-  "main": "./index.js",
+  "main": "./cimera/index.js",
   "version": "0.1"
 }
